@@ -1,0 +1,41 @@
+
+  <div class="ibox">
+    <div class="ibox-content">
+      <div class="panel-body">  
+
+        <p id="notice"><%= notice %></p>
+
+        <table class="table table-bordered table-hover" >
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Description</th>
+              <th colspan="2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @galleries.each do |gallery| %>
+            <tr> 
+              <td>  
+                <% if gallery.images.first %>
+                <%= link_to image_tag(gallery.images.first.image.url :thumb), admin_gallery_path(gallery) %>
+                <% else %>
+                  N/A
+                <% end %>
+              </td>
+            
+              <td><%= gallery.title.truncate(14) %></td>
+              <td><%= gallery.description %></td>
+              <td>
+                <%= link_to "Edit", edit_admin_gallery_path(gallery) %>
+                <%= link_to "Delete", admin_gallery_path(gallery),
+                :data => { :confirm => "Are you sure?" },
+                :method => :delete%>
+              </td>
+            </tr>
+          <% end %>  
+        </div>
+      </div>
+    </div>
+

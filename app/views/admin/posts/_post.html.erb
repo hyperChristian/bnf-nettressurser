@@ -1,0 +1,13 @@
+	
+	<div class="post-row">	
+		<div class="posts">
+			<span class="pleft"><%= post.title %></span>
+			<span class="pcenter"><%= status_converter(post.publish) %></span>
+			<span class="pright">
+				<%= link_to 'Add Child', new_admin_post_path(:parent_id => post) %> |
+				<%= link_to 'Edit', edit_admin_post_path(post) %> |
+				<%= link_to 'Show', admin_post_path(post) %> |
+				<%= link_to 'Delete', admin_post_path(post), method: :delete, data: {confirm: 'Are you sure?'} %>
+			</span>
+		</div>
+	</div>

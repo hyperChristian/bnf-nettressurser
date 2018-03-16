@@ -1,0 +1,239 @@
+
+    <!-- post content + sidebar -->
+    <section id="blog">
+        <div class="row">
+            <!-- post content area -->
+            <div class="col-sm-8 col-md-9">
+                <div class="blog block post-content-area">
+                	<p class="breadcrumbs">
+	                   <% all_parents = @post.ancestors %>
+						<% all_parents.each do |ancestor| %>
+							<%=  link_to ancestor.title, post_path(ancestor.id) %> /
+						<% end %>
+					</p>
+                    <div class="post-info-box">
+                    	<div class="row"><div class="col-md-12"><h3><%= @post.title %></h3></div></div>
+                    	<div class="row">
+                    		
+	                        <div class="col-md-8">
+	                        	
+	                        	<%= @post.content.html_safe %>  	
+	                        </div>
+				    		<div class="col-md-4">
+				    			<p><%= image_tag @post.image.url(:large)%></p>
+
+				    		</div>				    		                       
+                        </div>
+
+                        <!-- sections content area -->
+
+						<div class="row" style="margin-top: 50px;">
+							<% if @post.documents.present? %>
+							<div class="panel-group tabbed">								 
+			                    <div class="panel">
+				                    <div class="panel-heading">
+				                        <a class="panel-title collapsed" data-toggle="collapse" href="#panel-attachement" aria-expanded="false">
+				                        	<i class="fa fa-file-o"></i> Vedlegg
+				                        </a>
+				                    </div>
+				                    <div id="panel-attachement" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+				                        <div class="panel-body-bnf text-gray" style="padding:20px 40px;">
+											<% @post.documents.each do |d| %>
+												<p><i class="fa fa-file"></i> <%= link_to d.title, d.document.url, :target => 'blank' %></p>
+											<% end %>
+				                        </div>
+				                    </div>
+			                    </div><!-- / panel -->			       
+			                </div>	
+			                <% end %>
+			                <% if @post.sections.present? %>								
+							<% @post.sections.each do |section| %>
+							
+							<div class="panel-group tabbed">
+			                    <div class="panel">
+				                    <div class="panel-heading">
+				                        <a class="panel-title accordion-toggle collapsed" data-toggle="collapse" href="#panel<%= section.id %>" aria-expanded="false">
+				                        	<div class="block middle accordion-icon">	
+					                        	<div class="accordion-icon-holder video block">
+					                        		<%= selection_type_icon(section.sectiontype).html_safe %>
+					                        	</div> 
+				                        	</div>
+				                        	<div class="block middle accordion-head"><%= section.title %></div>
+				                        </a>
+				                    </div>
+				                    <div id="panel<%= section.id %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+				                        <div class="panel-body-bnf text-gray" style="padding:20px 0 0 40px;">
+				                        	<%= section.content.html_safe %>
+				                        </div>
+				                    </div>
+			                    </div><!-- / panel -->
+			                </div>
+			                <% end %>
+			                <% end %>
+			            </div>		            	
+					</div>
+
+
+					<% if @post.galleries.present? %>
+					<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+					    <% @post.galleries.each do |gallery| %>    
+					    <% unless gallery.images.empty? %>
+
+					  <!-- Wrapper for slides -->
+					    <div class="carousel-inner">
+
+					        <% gallery.images.each_with_index do |pic, i| %>
+					        <% if i == 0 %>
+					        <div class="item active">
+					            <%= image_tag pic.image.url :large %>
+					        </div>
+					     	<% else %>
+					        <div class="item">
+					            <%= image_tag pic.image.url :large %>
+					        </div>
+					     	<% end %>
+					        <% end %>
+
+					    </div>
+					    <% end %>
+					    <% end %>
+					  <!-- Left and right controls -->
+					    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+					        <span class="glyphicon glyphicon-chevron-left"></span>
+					        <span class="sr-only">Previous</span>
+					    </a>
+					    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+					        <span class="glyphicon glyphicon-chevron-right"></span>
+					        <span class="sr-only">Next</span>
+					    </a>
+
+					</div>                    
+					<% end %>
+
+
+				</div>
+
+
+
+
+
+
+
+				<% all_children = @post.descendants.arrange %>
+				<% #all_children = @post.siblings.arrange %>
+				<% #@posts = Post.where({}).arrange %>
+				<% #@posts = Post.where({:category_id => params[:cat]}).arrange %>
+				<%= arranged_tree_as_list(all_children, {:list_style => :bootstrap_list_group}) do |post| %>
+
+				<div  id="section-<%= post.id %>" class="row" style="margin: 50px 0 10px 20px;background-color: #e3edef;padding:40px;">
+
+				    <div class="content-bn" style="">
+
+
+                	<div class="row"><div class="col-md-12"><%= link_to post_path(post) do %><h3><%= post.title %></h3><% end %></div></div>
+                	<div class="row">
+                		
+                        <div class="col-md-7">
+                        	
+                        	<%= post.content.html_safe %>  	
+                        </div>
+			    		<div class="col-md-5">
+			    			<p><%= image_tag post.image.url(:large)%></p>
+
+			    		</div>				    		                       
+                    </div>
+
+
+						<% if post.sections.present? %>
+						<div class="row" style="margin-top: 40px;">
+							
+							<% post.sections.each do |section| %>
+							<div class="panel-group tabbed">
+			                    <div class="panel">
+			                    <div class="panel-heading">
+			                        <a class="panel-title collapsed" data-toggle="collapse" href="#panel<%= section.id %>" aria-expanded="false">
+			                         <%= selection_type_icon(section.sectiontype).html_safe %> <%= section.title %>
+			                        </a>
+			                    </div>
+			                    <div id="panel<%= section.id %>" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+			                        <div class="panel-body-bnf text-gray">
+			                        	<%= section.content.html_safe %>
+			                        </div>
+			                    </div>
+			                    </div><!-- / panel -->
+			                </div>
+			                <% end %>
+			            </div>
+		            	<% end %>
+
+
+
+
+
+					<% if post.galleries.present? %>
+					<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="false">
+					    <% post.galleries.each do |gallery| %>    
+					    <% unless gallery.images.empty? %>
+					    <h4><i class="fa fa-photo"></i> <%= gallery.title %></h4>
+					  <!-- Wrapper for slides -->
+					    <div class="carousel-inner">
+
+					        <% gallery.images.each_with_index do |pic, i| %>
+					        <% if i == 0 %>
+					        <div class="item active">
+					            <%= image_tag pic.image.url :large %>
+					        </div>
+					     	<% else %>
+					        <div class="item">
+					            <%= image_tag pic.image.url :large %>
+					        </div>
+					     	<% end %>
+					        <% end %>
+
+					    </div>
+					    <% end %>
+					    <% end %>
+					  <!-- Left and right controls -->
+					    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+					        <span class="glyphicon glyphicon-chevron-left"></span>
+					        <span class="sr-only">Previous</span>
+					    </a>
+					    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+					        <span class="glyphicon glyphicon-chevron-right"></span>
+					        <span class="sr-only">Next</span>
+					    </a>
+
+					</div>                    
+					<% end %>
+
+
+
+		            </div>
+
+
+				</div>
+				   <% end %>				
+            </div><!-- / col-sm-8 col-md-9 -->
+            <!-- / post content area -->
+
+            <!-- post sidebar area -->
+            <div class="col-sm-4 col-md-3 sidenav">
+				<div class="" style="position:fixed;overflow-y: hidden;">
+					<h5>Meny for <%= @post.title %></h5>
+					<% all_children = @post.descendants.arrange %>
+					<% #all_children = @post.siblings.arrange %>
+					<% #@posts = Post.where({}).arrange %>
+					<% #@posts = Post.where({:category_id => params[:cat]}).arrange %>
+					<%= arranged_tree_as_list(all_children, {:list_style => :bootstrap_list_group}) do |post| %>
+				    <span class="link-to">
+				    	<a href="#section-<%=post.id%>"><%= post.title %></a>				   
+				    </span>
+				   <% end %>
+				</div> 
+			</div>
+ 
+            <!-- / post sidebar area -->
+        </div><!-- / row -->
+    </section>
+    <!-- / post content + sidebar -->
+

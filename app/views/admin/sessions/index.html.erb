@@ -1,0 +1,28 @@
+	
+
+
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+ 
+            <h3>Welcome to IN+</h3>
+           
+            <p>Login in. To see it in action.</p>
+           <%= form_tag admin_sessions_path do %>
+                <div class="form-group">
+                    <%= label_tag :username %>
+                    <%= text_field_tag :usename %>
+                </div>
+                <div class="form-group">
+                 
+                    <%= label_tag :password %>
+                    <%= password_field_tag :password %>
+                </div>
+               
+                <%= submit_tag 'Logg inn', :class => "btn btn-primary block full-width m-b" %>
+
+                <a href="#"><small>Forgot password?</small></a>
+
+            <% end %>
+
+        </div>
+    </div>

@@ -1,0 +1,26 @@
+<h3>Moderators</h3>
+
+<table class="table table-bordered table-hover">
+	<thead>
+		<tr>
+			<th>Fullname</th>
+			<th>Username</th>
+			<th>Role</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% @moderators.each do |moderator| %>
+		<tr>
+			<td><%= moderator.fullname %></td>
+			<td><%= moderator.username %></td>
+			<td><%= moderator.role %></td>
+			<td><%= link_to 'Edit', edit_admin_moderator_path(moderator) %>|<%= link_to 'Show', "#" %>|<%= link_to 'Delete', "#" %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+
+
+
+

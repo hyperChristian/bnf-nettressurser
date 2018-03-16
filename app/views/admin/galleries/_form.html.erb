@@ -1,0 +1,75 @@
+	<input type="hidden" id="galleryID" value="<%= @gallery.id %>">
+
+	<%= render 'validation_errors', object: @gallery %>
+	<%= form_for [:admin, @gallery ], html: { multipart: true } do |f| %>
+
+		<div class="form-group">
+			<%= f.label :title, :class => "" %>
+			<%= f.text_field :title, :class => 'form-control', :placeholder => "Title" %>
+		</div>			  
+
+		<div class="control-group">
+			<%= f.label :images, :class => 'control-label' %>
+			<div class="controls">
+		  		<%= file_field_tag "images[]", type: :file, multiple: true %>
+			</div>
+		</div>
+		<p></p>
+		<div class="form-actions">
+			<%= f.submit nil, :class => 'btn btn-xs btn-primary' %>
+			<%= link_to t('.cancel', :default => t("helpers.links.cancel")), admin_galleries_path, :class => 'btn btn-xs btn-default' %>
+		</div>
+
+	
+
+	<p></p>
+	<div class="row">
+
+		<div class="table-responsive">
+		    <table class="table table-bordered table-stripped">
+		        <thead>
+		        <tr>
+		            <th>Image preview</th>
+		            <th>Description</th>
+		            <th>Image url</th>
+		            <th>Sort order</th>
+		            <th>Actions</th>
+		        </tr>
+		        </thead>
+		        <tbody>
+
+				<% unless @gallery.images.empty? %>
+				<% @gallery.images.each do |pic| %>
+
+		        <tr>
+		            <td>
+		                <%= image_tag pic.image.url :thumb %>
+		            </td>
+		            <td>
+						<div class="form-group">
+							<%= text_area pic.description, :class => 'form-control' %>
+						</div>			
+		            </td>	            
+		            <td>
+		                <input type="text" class="form-control" value="<%= pic.image.url :thumb %>">
+		            </td>
+		            <td>
+		                <input type="text" class="form-control" value="1">
+		            </td>
+		            <td>
+		            	<%= link_to "Update picture", :class => 'btn btn-default' do %>
+		            		<i class="fa fa-save"></i>
+		            	<% end %>		            	
+		            	<%= link_to "Delete picture", :class => 'btn btn-default', :data => { :confirm => "Are you sure?" }, :method => :delete do %>
+		            		<i class="fa fa-trash"></i>
+		            	<% end %>            	
+		            </td>
+		        </tr>
+		 		<% end %>
+		 		<% end %>
+		        </tbody>
+		    </table>
+		</div>
+	
+	</div>
+	<% end %>

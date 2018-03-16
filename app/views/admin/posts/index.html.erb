@@ -1,0 +1,41 @@
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="panel-body">	
+
+			<%= link_to 'Add New Top Level Article', new_admin_post_path, :class => 'btn btn-sm btn-primary' %>
+			<p></p>
+
+				<%= form_tag(admin_posts_path, method: :get) do %>
+				<div class="input-group">
+					<%= text_field_tag :search, "" , :class => "input form-control" %>
+					
+					<span class="input-group-btn">
+						<%= submit_tag 'Søk', :class => "btn btn btn-primary"  %>
+			            <i class="fa fa-search"></i>
+			        </span>
+				</div>
+				<% end %>
+
+				<p></p>
+
+				<% #@posts = Post.where({}).arrange %>
+
+				<% @posts = Post.where({:category_id => params[:cat]}).arrange %>
+
+				<%= arranged_tree_as_list(@posts, {:list_style => :bootstrap_list_group}) do |post| %>
+				<div class="dd-container">
+			    <span class="link-to">
+			    	<%= link_to edit_admin_post_path(post) do %>
+			    		<span class="my-link"><i class='fa fa-ellipsis-v'></i> <%= post.title %></span> <span class='my-edit-link'><i>Rediger</i></span>
+			    	<% end %>
+			    </span>
+				   	<div class="action-buttons text">
+						<%= link_to 'Add Child', new_admin_post_path(:parent_id => post, :category_id => post.category_id), :class => "btn btn-xs btn-primary" %>
+						<%= link_to 'Redigere', edit_admin_post_path(post), :class => "btn btn-xs btn-primary" %>
+						<%= link_to '', admin_post_path(post), method: :delete, data: {confirm: 'Are you sure?'}, :class => "fa fa-trash btn btn-sm btn-danger" %>
+				    </div>
+			   	</div>
+			<% end %>
+		</div>
+	</div>
+</div>

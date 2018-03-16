@@ -1,0 +1,272 @@
+
+	    
+
+		<%= render 'validation_errors', object: @post %>
+
+		<%= form_for [:admin, @post ], html: { multipart: true } do |f| %>
+
+		<%= f.hidden_field :parent_id%>
+
+		<div class="col-sm-9">
+
+		<div class="ibox">
+        <div class="ibox-content">
+        	<% all_parents = @post.ancestors %>
+			<% all_parents.each do |title| %>
+				<%=  link_to title.title, edit_admin_post_path(title.id) %> /
+			<% end %>
+        <div class="panel-body">	
+			<div class="form-group">
+				<%= f.label :title, :class => "sr-only" %>
+				<%= f.text_field :title, :class => 'form-control', :placeholder => "Title" %>
+			</div>		
+			<div class="form-group">
+				<%= f.text_area :content, :class => "summernote" %>
+			</div>
+ 			<div><h3>Diverse felter</h3><hr></div>
+            <div class="tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#tab-1" aria-expanded="true"> Book Article</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-2" aria-expanded="false">Sections</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-3" aria-expanded="false">Galleries</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-4" aria-expanded="false">Links</a></li>
+                    <li class=""><a data-toggle="tab" href="#tab-5" aria-expanded="false">Attachments</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab-1" class="tab-pane active">
+                        <div class="panel-body">
+
+						
+							<div class="form-group">
+								<%= f.label :category_id, :class => "sr-only" %>
+								<%= f.select :category_id, Category.all.collect {|c| [c.name, c.id]}, {prompt: 'Velg kategori'}, :class => "form-control" %>
+							</div>
+
+							<div class="form-group">
+								<%= f.select :tag_ids, Tag.all.collect {|t| [t.name, t.id]}, {prompt: ''}, multiple: :true, :class => "form-control chosen-select" %>
+							</div>								
+
+                        </div>
+                    </div>
+
+                    <div id="tab-2" class="tab-pane">
+                        <div class="panel-body">
+							<h4>Sections:</h4>
+
+							<p>Add a section</p>
+							<%= f.fields_for :sections do |s| %>
+								<div class="form-group">
+									<%= s.label :sectiontype %>
+									<%= s.text_field :sectiontype %> <span>1 - Oppgave, 2 - Link, 3 - Video</span>
+									
+								</div>
+								<div class="form-group">
+									<%= s.label :title, :class => "" %>
+									<%= s.text_field :title, :class => 'form-control', :placeholder => "Legge til en ny tittel..." %>
+								</div>	
+								<div class="form-group">
+									<%= s.label :content, :class => "" %>
+									<%= s.text_area :content, :class => 'summernote' %>
+								</div>	
+								   <%= s.check_box :_destroy %>
+      								<%= s.label :_destroy, 'delete' %>
+
+							<% end %>
+						 <%= f.submit 'Delete checked Sections', :name => 'delete_sections' %>
+                        </div>
+                    </div>        
+
+                    <div id="tab-3" class="tab-pane">
+                        <div class="panel-body">
+							<h4>Galleries:</h4>
+							<%= f.fields_for :galleries do |g| %>
+								<div class="form-group">
+									<%= g.label :title, :class => "sr-only" %>
+									<%= g.text_field :title, :class => 'form-control', :placeholder => "Title" %>
+								</div>
+								<div class="form-group">
+									<%= g.text_field :description, :class => 'form-control', :placeholder => "Description" %>
+								</div>	
+							<% end %>
+
+                        </div>
+                    </div>
+
+
+                    <div id="tab-4" class="tab-pane">
+                        <div class="panel-body">
+
+							<h4>Links:</h4>
+							<p>Add a link</p>
+							<%= f.fields_for :links do |l| %>
+								<div class="form-group">
+									<%= l.label :title, :class => "sr-only" %>
+									<%= l.text_field :title, :class => 'form-control', :placeholder => "Title" %>
+								</div>	
+								<div class="form-group">
+									<%= l.label :url, :class => "sr-only" %>
+									<%= l.text_field :url, :class => 'form-control', :placeholder => "Url" %>
+								</div>					
+							<% end %>
+
+                        </div>
+                    </div>
+
+
+	                <div id="tab-5" class="tab-pane">
+                        <div class="panel-body">
+
+							<h4>Documents:</h4>
+							<p>Add an attachement</p>
+								<%= f.fields_for :documents do |d| %>
+								<div class="form-group">
+									<%= d.label :title, :class => "col-sm-2 control-label" %>
+									<div class="col-sm-10">
+										<%= d.text_field :title, :class => 'form-control', :placeholder => "Title" %>
+									</div>
+								</div>	
+								<div class="form-group">
+									<%= d.label :description, :class => "col-sm-2 control-label" %>
+									<div class="col-sm-10">
+										<%= d.text_field :description, :class => 'form-control', :placeholder => "Description" %>
+									</div>
+								</div>									
+								<div class="btn-group">
+									<%= d.label :document, :class => "btn btn-primary block full-width m-b" do %>
+										<%= d.file_field :document, :class => 'hide'%>Upload New Document
+									<% end %>
+								</div>					
+							<% end %>
+
+                        </div>
+                    </div>                    
+
+                </div>
+
+            </div>
+		</div> 
+		</div>
+		</div>
+		</div>
+		<div class="col-sm-3">
+
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+			        <%= f.submit :class => "btn btn-primary btn-block" %>
+			    </div>
+			    <div class="panel-body">
+					
+						<%= f.label :publish %>
+						<%= f.check_box :publish, :class => ""  %>
+					    
+			    </div>
+			    <div class="panel-footer">
+			    	<span class="text-muted small">
+			    		Sist oppdatert: <i class="fa fa-clock-o"></i> <%= @post.updated_at.to_s(:long) if @post.updated_at? %>
+			    	</span>	
+			    </div>
+			</div>
+
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+			        Hovedbilde
+			    </div>
+			    <div class="panel-body">
+					<div class="img-responsive" id="image-holder"><%= image_tag @post.image_url(:medium) if @post.image? %></div>
+			    </div>
+				<div class="panel-footer">
+						<%= f.label :image, :class => "btn btn-default btn-block" do %>
+							<%= f.file_field :image, :class => 'hide'%><i class="fa fa-upload"></i>  last opp bilde
+						<% end %>
+					
+				</div>					    
+			</div>
+
+			<div class="panel panel-default">
+			    <div class="panel-heading">
+			        Vedlegg
+			    </div>
+			    <div class="panel-body">
+				<% @post.documents.each do |d| %>
+					<p><i class="fa fa-file"></i> <%=link_to d.title%></p> 
+				<% end %>
+			    </div>
+			    <div class="panel-footer">
+			    	
+			    </div>
+			</div>
+	
+		</div>    
+        <% end %>
+
+
+
+<script type="text/javascript">
+    $(function() {
+      $('.summernote').summernote({
+        height: 250,
+        tabsize: 4,
+    	toolbar: [
+                 ["style", ["style"]],
+                 ["style", ["bold", "italic", "underline", "clear"]],
+                 ["table", ["table"]],
+ 
+                 ["color", ["color"]],
+                 ["para", ["ul", "ol", "paragraph"]],
+                 ['insert', ['link', 'picture', 'videoAttributes']],	
+                 ['insert', ['hr', 'fullscreen']]
+             ]
+      });
+    });
+  </script>
+
+<script type="text/javascript">
+  var config = {
+    '.chosen-select' : {},
+    '.chosen-select-deselect' : {allow_single_deselect: true},
+    '.chosen-select-no-single': {disable_search_threshold: 10},
+    '.chosen-select-no-result': {no_results_text: 'Oops, nothing found!'},
+    '.chosen-select-width' : {width: "95%"}
+  }
+  for (var selector in config) {
+    $(selector).chosen(config[selector]);
+  }
+</script>
+<script type="text/javascript">
+//	var elem = document.querySelector('.js-switch');
+//    var switchery = new Switchery(elem, { color: '#1AB394' });	
+
+
+$(document).ready(function() {
+	$("#post_image").on('change', function() {
+	  //Get count of selected files
+	  var countFiles = $(this)[0].files.length;
+	  var imgPath = $(this)[0].value;
+	  var extn = imgPath.substring(imgPath.lastIndexOf('.') + 1).toLowerCase();
+	  var image_holder = $("#image-holder");
+	  image_holder.empty();
+	  if (extn == "gif" || extn == "png" || extn == "jpg" || extn == "jpeg") {
+	    if (typeof(FileReader) != "undefined") {
+	      //loop for each file selected for uploaded.
+	      for (var i = 0; i < countFiles; i++) 
+	      {
+	        var reader = new FileReader();
+	        reader.onload = function(e) {
+	          $("<img />", {
+	            "src": e.target.result,
+	            "class": "thumb-image"
+	          }).appendTo(image_holder);
+	        }
+	        image_holder.show();
+	        reader.readAsDataURL($(this)[0].files[i]);
+	      }
+	    } else {
+	      alert("This browser does not support FileReader.");
+	    }
+	  } else {
+	    alert("Pls select only images");
+	  }
+	});
+});
+</script>
+  

@@ -1,0 +1,45 @@
+<%= form_for [:admin, @category] do |f| %>
+  <% if @category.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@category.errors.count, "error") %> prohibited this admin_category from being saved:</h2>
+
+      <ul>
+      <% @category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :name, :class => "" %>
+    <%= f.text_field :name, :class => 'form-control', :placeholder => "Name" %>
+  </div>
+  <div class="field">
+    <%= f.label :description %><br>
+    <%= f.text_area :description, :class => "summernote" %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+
+<script type="text/javascript">
+    $(function() {
+      $('.summernote').summernote({
+        height: 250,
+        tabsize: 4,
+      toolbar: [
+                 ["style", ["style"]],
+                 ["style", ["bold", "italic", "underline", "clear"]],
+                 ["table", ["table"]],
+ 
+                 ["color", ["color"]],
+                 ["para", ["ul", "ol", "paragraph"]],
+                 ['insert', ['link', 'picture', 'videoAttributes']],  
+                 ['insert', ['hr', 'fullscreen']]
+             ]
+      });
+    });
+  </script>

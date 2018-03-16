@@ -1,0 +1,48 @@
+ <div class="ibox">
+    <div class="ibox-content">
+      <div class="panel-body">  
+
+        <p id="notice"><%= notice %></p>
+
+  <input type="hidden" id="galleryID" value="<%= @gallery.id %>">
+
+  <p>
+    <b>Name: </b>
+    <%= @gallery.title %>
+  </p>
+
+  <div class="form-actions">
+    <%= link_to 'Back', admin_galleries_path, :class => 'btn btn-mini'  %>
+    <%= link_to 'Edit gallery', edit_admin_gallery_path(@gallery), :class => 'btn btn-mini' %>
+    <%= link_to 'Delete gallery', admin_gallery_path(@gallery), :method => 'delete', :confirm => 'Are you sure?', :class => 'btn btn-mini' %>
+  </div>
+
+</div>
+
+<div class="row">
+
+<% unless @images.empty? %>
+  <% @images.each do |pic| %>
+    <div class="file-box">
+        <div class="file">
+            <a href="#">
+                <span class="corner"></span>
+
+                <div class="image">
+                   <%= image_tag pic.image.url :thumb %>
+                </div>
+                <div class="file-name">
+                    <%= link_to "Delete picture", :data => { :confirm => "Are you sure?" }, :method => :delete %>
+                    <br>
+                    <small>Added: <%= time_ago_in_words(pic.created_at) %> ago</small>
+                </div>
+            </a>
+
+        </div>
+    </div> 
+  <% end %>
+<% end %>
+</div>
+</div>
+</div>
+

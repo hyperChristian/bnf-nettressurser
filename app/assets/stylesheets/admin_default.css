@@ -1,0 +1,71 @@
+
+
+
+
+.dd-container {
+    position: relative;
+    width:100%;
+    padding:5px;
+}
+
+.link-to {
+  opacity: 1;
+  display: block;
+  width: 100%;
+
+  padding:5px;
+
+}
+
+
+
+#image-holder img {
+	vertical-align: middle;
+	width: 100%;
+}
+
+.action-buttons {
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 90%;
+  margin-right: 100px;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  text-align: center;
+}
+.my-edit-link{
+	opacity:0;
+	position: absolute;
+	margin-left: 20px;
+
+}
+.dd-container .my-link:hover .my-edit-link{
+  opacity: 1;
+}
+
+.dd-container:hover  {
+  opacity: 1;
+  background-color: #f0f0f0;
+
+}
+
+.dd-container:hover .action-buttons{
+  opacity: 1;
+}
+
+.text {
+  background-color: transparent;
+  color: white;
+  font-size: 12px;
+  padding: 2px 2px;
+  width:200px;
+  
+}
+.bulk{
+  position: absolute;
+  display: table-cell;
+  width: 33px;
+    vertical-align: middle;
+    text-align: center;
+}

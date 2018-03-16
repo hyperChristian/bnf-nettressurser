@@ -1,0 +1,2 @@
+module Admin::LinkHelper
+end
